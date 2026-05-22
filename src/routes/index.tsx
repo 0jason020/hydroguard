@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Logo } from "@/components/Logo";
-import { ArrowRight, Shield, Brain, Satellite, Activity, Droplets, Globe2, Sparkles, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Shield, Brain, Satellite, Activity, Droplets, Globe2, Sparkles, CheckCircle2, MapPin } from "lucide-react";
+import { team } from "@/lib/team";
+import { RwandaMap } from "@/components/dashboard/RwandaMap";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -25,6 +27,7 @@ function Landing() {
             <a href="#mission" className="hover:text-foreground transition">Mission</a>
             <a href="#features" className="hover:text-foreground transition">Intelligence</a>
             <a href="#ggcrs" className="hover:text-foreground transition">GGCRS</a>
+            <a href="#team" className="hover:text-foreground transition">Team</a>
             <a href="#impact" className="hover:text-foreground transition">Impact</a>
           </nav>
           <div className="flex items-center gap-2">
@@ -177,6 +180,44 @@ function Landing() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Team */}
+      <section id="team" className="relative mx-auto max-w-7xl px-6 py-20">
+        <div className="text-center max-w-2xl mx-auto">
+          <p className="text-xs uppercase tracking-[0.2em] text-primary font-semibold">Our Team</p>
+          <h2 className="mt-3 text-4xl font-semibold tracking-tight">A field network across all four provinces.</h2>
+          <p className="mt-3 text-muted-foreground">
+            Hydrologists, GIS engineers, climate data scientists and field responders — distributed from Kigali HQ to
+            the volcanic north, lake-side west, agricultural south and savanna east.
+          </p>
+        </div>
+
+        <div className="mt-10 grid lg:grid-cols-5 gap-6">
+          <div className="lg:col-span-3">
+            <RwandaMap height={460} defaultLayer="both" />
+          </div>
+          <div className="lg:col-span-2 grid sm:grid-cols-2 lg:grid-cols-1 gap-3 max-h-[460px] lg:overflow-auto pr-1">
+            {team.map((m) => (
+              <div key={m.name} className="glass rounded-2xl p-4 flex gap-3 items-start hover:border-primary/40 transition">
+                <div
+                  className="h-11 w-11 rounded-full grid place-items-center text-xs font-bold shrink-0"
+                  style={{ background: m.color, color: "oklch(0.16 0.04 250)" }}
+                >
+                  {m.avatar}
+                </div>
+                <div className="min-w-0">
+                  <div className="text-sm font-semibold truncate">{m.name}</div>
+                  <div className="text-xs text-primary">{m.role}</div>
+                  <div className="text-[11px] text-muted-foreground mt-0.5 flex items-center gap-1">
+                    <MapPin className="h-3 w-3" /> {m.district} · {m.province}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">{m.focus}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
