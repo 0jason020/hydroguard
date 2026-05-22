@@ -72,14 +72,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "HydroGuard Rwanda — AI Climate Risk & Water Intelligence" },
+      { name: "description", content: "AI-powered climate risk and water intelligence system predicting floods, landslides, water pollution, and agricultural stress across Rwanda." },
+      { name: "author", content: "HydroGuard Rwanda" },
+      { property: "og:title", content: "HydroGuard Rwanda" },
+      { property: "og:description", content: "Predict. Prevent. Protect. AI-Powered Climate Resilience for Rwanda." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       {
