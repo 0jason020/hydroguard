@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Logo } from "@/components/Logo";
-import { ArrowRight, Shield, Brain, Satellite, Activity, Droplets, Globe2, Sparkles, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Shield, Brain, Satellite, Activity, Droplets, Globe2, Sparkles, CheckCircle2, MapPin } from "lucide-react";
+import { team } from "@/lib/team";
+import { RwandaMap } from "@/components/dashboard/RwandaMap";
 
 export const Route = createFileRoute("/")({
   head: () => ({
