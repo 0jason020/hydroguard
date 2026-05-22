@@ -1,9 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Topbar } from "@/components/dashboard/Topbar";
-import { temperatureTrend, rainfallForecast } from "@/lib/sample-data";
+import { temperatureTrend, rainfallForecast as fallbackForecast } from "@/lib/sample-data";
 import { StatCard } from "@/components/dashboard/StatCard";
-import { ThermometerSun, CloudRain, Wind, Droplets } from "lucide-react";
+import { ThermometerSun, CloudRain, Wind, Droplets, RefreshCw, Radio } from "lucide-react";
 import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, BarChart, Bar } from "recharts";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { getLiveClimate } from "@/lib/climate.functions";
 
 export const Route = createFileRoute("/dashboard/weather")({ component: Weather });
 
@@ -18,31 +21,77 @@ const variability = [
 ];
 
 function Weather() {
+  const fetchClimate = useServerFn(getLiveClimate);
+  const { data, isLoading, isFetching, refetch } = useQuery({
+    queryKey: ["live-climate"],
+    queryFn: () => fetchClimate(),
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const forecast = data?.rainfallForecast?.length ? data.rainfallForecast : fallbackForecast;
+  const sum7 = data?.districts.reduce((a, d) => a + (d.rainfall7d ?? 0), 0) ?? 0;
+  const avgRain = data?.districts.length ? Math.round(sum7 / data.districts.length) : null;
+  const k = data?.kigaliCurrent;
+
   return (
     <>
-      <Topbar title="Weather & Rainfall Analytics" subtitle="Long-term climate variability and short-term operational forecasts." />
+      <Topbar title="Weather & Rainfall Analytics" subtitle="Long-term climate variability and live operational forecasts." />
       <div className="p-6 space-y-6">
+        <div className="flex items-center justify-between glass rounded-xl px-4 py-2.5 text-xs">
+          <div className="flex items-center gap-2">
+            <Radio className={`h-3.5 w-3.5 ${isFetching ? "text-warning animate-pulse" : "text-success"}`} />
+            <span className="text-muted-foreground">
+              Live source: <span className="text-foreground font-medium">{data?.source ?? "Open-Meteo"}</span>
+              {data?.fetchedAt && <> · refreshed {new Date(data.fetchedAt).toLocaleTimeString()}</>}
+            </span>
+          </div>
+          <button onClick={() => refetch()} className="flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-secondary/60 transition">
+            <RefreshCw className={`h-3 w-3 ${isFetching ? "animate-spin" : ""}`} /> Refresh
+          </button>
+        </div>
+
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <StatCard label="Avg temperature" value="20.6°C" delta="+0.4° vs avg" trend="up" icon={ThermometerSun} tone="warning" />
-          <StatCard label="7-day rainfall" value="353 mm" delta="+18%" trend="up" icon={CloudRain} tone="primary" />
-          <StatCard label="Humidity" value="78%" icon={Droplets} tone="primary" />
-          <StatCard label="Wind avg" value="12 km/h" icon={Wind} tone="success" />
+          <StatCard
+            label="Kigali temperature"
+            value={k?.temperature != null ? `${k.temperature.toFixed(1)}°C` : isLoading ? "…" : "—"}
+            icon={ThermometerSun}
+            tone="warning"
+          />
+          <StatCard
+            label="Avg 7-day rainfall"
+            value={avgRain != null ? `${avgRain} mm` : isLoading ? "…" : "—"}
+            delta="across 30 districts"
+            icon={CloudRain}
+            tone="primary"
+          />
+          <StatCard
+            label="Humidity (Kigali)"
+            value={k?.humidity != null ? `${Math.round(k.humidity)}%` : isLoading ? "…" : "—"}
+            icon={Droplets}
+            tone="primary"
+          />
+          <StatCard
+            label="Wind (Kigali)"
+            value={k?.windspeed != null ? `${k.windspeed.toFixed(1)} km/h` : isLoading ? "…" : "—"}
+            icon={Wind}
+            tone="success"
+          />
         </div>
 
         <div className="grid lg:grid-cols-2 gap-6">
           <div className="glass-strong rounded-2xl p-5">
-            <h2 className="text-lg font-semibold">7-day rainfall forecast</h2>
-            <p className="text-xs text-muted-foreground mb-3">Predicted vs actual precipitation</p>
+            <h2 className="text-lg font-semibold">7-day rainfall outlook</h2>
+            <p className="text-xs text-muted-foreground mb-3">Live Open-Meteo forecast averaged across all 30 districts (mm)</p>
             <ResponsiveContainer width="100%" height={280}>
-              <AreaChart data={rainfallForecast}>
+              <AreaChart data={forecast}>
                 <defs>
                   <linearGradient id="wg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="oklch(0.78 0.15 200)" stopOpacity={0.5}/><stop offset="100%" stopColor="oklch(0.78 0.15 200)" stopOpacity={0}/></linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.32 0.04 240 / 0.3)" />
                 <XAxis dataKey="day" {...axis} /><YAxis {...axis} />
                 <Tooltip {...tip} /><Legend wrapperStyle={{fontSize:11}} />
-                <Area type="monotone" dataKey="actual" stroke="oklch(0.78 0.15 200)" strokeWidth={2.5} fill="url(#wg1)" />
-                <Area type="monotone" dataKey="predicted" stroke="oklch(0.72 0.18 155)" strokeWidth={2} strokeDasharray="4 4" fill="none" />
+                <Area type="monotone" dataKey="actual" name="Past 7d" stroke="oklch(0.78 0.15 200)" strokeWidth={2.5} fill="url(#wg1)" />
+                <Area type="monotone" dataKey="predicted" name="Next 7d" stroke="oklch(0.72 0.18 155)" strokeWidth={2} strokeDasharray="4 4" fill="none" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -59,6 +108,20 @@ function Weather() {
               </LineChart>
             </ResponsiveContainer>
           </div>
+        </div>
+
+        <div className="glass-strong rounded-2xl p-5">
+          <h2 className="text-lg font-semibold">Live 7-day rainfall by district</h2>
+          <p className="text-xs text-muted-foreground mb-3">Past 7 days measured precipitation (mm), live from Open-Meteo</p>
+          <ResponsiveContainer width="100%" height={320}>
+            <BarChart data={(data?.districts ?? []).slice().sort((a, b) => (b.rainfall7d ?? 0) - (a.rainfall7d ?? 0))}>
+              <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.32 0.04 240 / 0.3)" />
+              <XAxis dataKey="name" {...axis} angle={-35} textAnchor="end" height={70} interval={0} />
+              <YAxis {...axis} />
+              <Tooltip {...tip} />
+              <Bar dataKey="rainfall7d" name="Rainfall (mm, past 7d)" radius={[6,6,0,0]} fill="oklch(0.78 0.15 200)" />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
 
         <div className="glass-strong rounded-2xl p-5">
