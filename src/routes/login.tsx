@@ -10,8 +10,8 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("aline@minema.gov.rw");
-  const [password, setPassword] = useState("••••••••");
+  const [email, setEmail] = useState("cyusajason209@gmail.com");
+  const [password, setPassword] = useState("cyusa209");
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2">

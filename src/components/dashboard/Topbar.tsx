@@ -24,10 +24,10 @@ export function Topbar({ title, subtitle }: { title: string; subtitle?: string }
           <Activity className="h-4 w-4" />
         </button>
         <div className="flex items-center gap-2 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 px-3 py-1.5 border border-primary/30">
-          <div className="grid h-7 w-7 place-items-center rounded-lg bg-primary text-primary-foreground text-xs font-semibold">AK</div>
+          <div className="grid h-7 w-7 place-items-center rounded-lg bg-primary text-primary-foreground text-xs font-semibold">CJ</div>
           <div className="hidden md:block leading-tight">
-            <div className="text-xs font-semibold">Dr. Aline Karenzi</div>
-            <div className="text-[10px] text-muted-foreground">Climate Analyst</div>
+            {/* <div className="text-xs font-semibold">Dr. Aline Karenzi</div>
+            <div className="text-[10px] text-muted-foreground">Climate Analyst</div> */}
           </div>
         </div>
       </div>
