@@ -6,7 +6,8 @@ import {
 import { Logo } from "@/components/Logo";
 import { cn } from "@/lib/utils";
 
-const nav = [
+type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean };
+const nav: NavItem[] = [
   { to: "/dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
   { to: "/dashboard/flood", label: "Flood Prediction", icon: CloudRain },
   { to: "/dashboard/landslide", label: "Landslide Risk", icon: Mountain },
@@ -16,7 +17,7 @@ const nav = [
   { to: "/dashboard/alerts", label: "Alerts", icon: BellRing },
   { to: "/dashboard/reports", label: "Reports", icon: FileBarChart },
   { to: "/dashboard/settings", label: "Settings", icon: Settings },
-] as const;
+];
 
 export function Sidebar() {
   const path = useRouterState({ select: (s) => s.location.pathname });
