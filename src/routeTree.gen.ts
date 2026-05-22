@@ -9,38 +9,208 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
+import { Route as DashboardWeatherRouteImport } from './routes/dashboard.weather'
+import { Route as DashboardWaterRouteImport } from './routes/dashboard.water'
+import { Route as DashboardSettingsRouteImport } from './routes/dashboard.settings'
+import { Route as DashboardReportsRouteImport } from './routes/dashboard.reports'
+import { Route as DashboardLandslideRouteImport } from './routes/dashboard.landslide'
+import { Route as DashboardFloodRouteImport } from './routes/dashboard.flood'
+import { Route as DashboardAlertsRouteImport } from './routes/dashboard.alerts'
+import { Route as DashboardAiRouteImport } from './routes/dashboard.ai'
 
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardWeatherRoute = DashboardWeatherRouteImport.update({
+  id: '/weather',
+  path: '/weather',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardWaterRoute = DashboardWaterRouteImport.update({
+  id: '/water',
+  path: '/water',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardReportsRoute = DashboardReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardLandslideRoute = DashboardLandslideRouteImport.update({
+  id: '/landslide',
+  path: '/landslide',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardFloodRoute = DashboardFloodRouteImport.update({
+  id: '/flood',
+  path: '/flood',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardAlertsRoute = DashboardAlertsRouteImport.update({
+  id: '/alerts',
+  path: '/alerts',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardAiRoute = DashboardAiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
+  getParentRoute: () => DashboardRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteWithChildren
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
+  '/dashboard/ai': typeof DashboardAiRoute
+  '/dashboard/alerts': typeof DashboardAlertsRoute
+  '/dashboard/flood': typeof DashboardFloodRoute
+  '/dashboard/landslide': typeof DashboardLandslideRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/water': typeof DashboardWaterRoute
+  '/dashboard/weather': typeof DashboardWeatherRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
+  '/dashboard/ai': typeof DashboardAiRoute
+  '/dashboard/alerts': typeof DashboardAlertsRoute
+  '/dashboard/flood': typeof DashboardFloodRoute
+  '/dashboard/landslide': typeof DashboardLandslideRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/water': typeof DashboardWaterRoute
+  '/dashboard/weather': typeof DashboardWeatherRoute
+  '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteWithChildren
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
+  '/dashboard/ai': typeof DashboardAiRoute
+  '/dashboard/alerts': typeof DashboardAlertsRoute
+  '/dashboard/flood': typeof DashboardFloodRoute
+  '/dashboard/landslide': typeof DashboardLandslideRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/water': typeof DashboardWaterRoute
+  '/dashboard/weather': typeof DashboardWeatherRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/signup'
+    | '/dashboard/ai'
+    | '/dashboard/alerts'
+    | '/dashboard/flood'
+    | '/dashboard/landslide'
+    | '/dashboard/reports'
+    | '/dashboard/settings'
+    | '/dashboard/water'
+    | '/dashboard/weather'
+    | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/dashboard/ai'
+    | '/dashboard/alerts'
+    | '/dashboard/flood'
+    | '/dashboard/landslide'
+    | '/dashboard/reports'
+    | '/dashboard/settings'
+    | '/dashboard/water'
+    | '/dashboard/weather'
+    | '/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/signup'
+    | '/dashboard/ai'
+    | '/dashboard/alerts'
+    | '/dashboard/flood'
+    | '/dashboard/landslide'
+    | '/dashboard/reports'
+    | '/dashboard/settings'
+    | '/dashboard/water'
+    | '/dashboard/weather'
+    | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  SignupRoute: typeof SignupRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +218,106 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/weather': {
+      id: '/dashboard/weather'
+      path: '/weather'
+      fullPath: '/dashboard/weather'
+      preLoaderRoute: typeof DashboardWeatherRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/water': {
+      id: '/dashboard/water'
+      path: '/water'
+      fullPath: '/dashboard/water'
+      preLoaderRoute: typeof DashboardWaterRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/settings': {
+      id: '/dashboard/settings'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardSettingsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/reports': {
+      id: '/dashboard/reports'
+      path: '/reports'
+      fullPath: '/dashboard/reports'
+      preLoaderRoute: typeof DashboardReportsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/landslide': {
+      id: '/dashboard/landslide'
+      path: '/landslide'
+      fullPath: '/dashboard/landslide'
+      preLoaderRoute: typeof DashboardLandslideRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/flood': {
+      id: '/dashboard/flood'
+      path: '/flood'
+      fullPath: '/dashboard/flood'
+      preLoaderRoute: typeof DashboardFloodRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/alerts': {
+      id: '/dashboard/alerts'
+      path: '/alerts'
+      fullPath: '/dashboard/alerts'
+      preLoaderRoute: typeof DashboardAlertsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/ai': {
+      id: '/dashboard/ai'
+      path: '/ai'
+      fullPath: '/dashboard/ai'
+      preLoaderRoute: typeof DashboardAiRouteImport
+      parentRoute: typeof DashboardRoute
+    }
   }
 }
 
+interface DashboardRouteChildren {
+  DashboardAiRoute: typeof DashboardAiRoute
+  DashboardAlertsRoute: typeof DashboardAlertsRoute
+  DashboardFloodRoute: typeof DashboardFloodRoute
+  DashboardLandslideRoute: typeof DashboardLandslideRoute
+  DashboardReportsRoute: typeof DashboardReportsRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DashboardWaterRoute: typeof DashboardWaterRoute
+  DashboardWeatherRoute: typeof DashboardWeatherRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardAiRoute: DashboardAiRoute,
+  DashboardAlertsRoute: DashboardAlertsRoute,
+  DashboardFloodRoute: DashboardFloodRoute,
+  DashboardLandslideRoute: DashboardLandslideRoute,
+  DashboardReportsRoute: DashboardReportsRoute,
+  DashboardSettingsRoute: DashboardSettingsRoute,
+  DashboardWaterRoute: DashboardWaterRoute,
+  DashboardWeatherRoute: DashboardWeatherRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRoute: DashboardRouteWithChildren,
+  LoginRoute: LoginRoute,
+  SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
