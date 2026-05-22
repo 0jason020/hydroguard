@@ -17,13 +17,16 @@ export function RwandaMap({
   onSelect,
   defaultLayer = "risk" as Layer,
   showLayerControl = true,
+  data,
 }: {
   height?: number;
   metric?: "floodRisk" | "landslideRisk";
   onSelect?: (d: District) => void;
   defaultLayer?: Layer;
   showLayerControl?: boolean;
+  data?: District[];
 }) {
+  const items = data ?? districts;
   const [mounted, setMounted] = useState(false);
   const [Comp, setComp] = useState<any>(null);
   const [L, setL] = useState<any>(null);
@@ -77,7 +80,7 @@ export function RwandaMap({
           url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
         />
         {showRisk &&
-          districts.map((d) => {
+          items.map((d) => {
             const level = d[metric];
             const color = riskColor[level];
             const radius = level === "high" ? 13 : level === "moderate" ? 10 : 7;
