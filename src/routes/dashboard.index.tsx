@@ -3,7 +3,8 @@ import { Topbar } from "@/components/dashboard/Topbar";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { AlertCard } from "@/components/dashboard/AlertCard";
 import { RwandaMap } from "@/components/dashboard/RwandaMap";
-import { alerts, rainfallForecast, hydropowerLevels, agricultureStress, districts, sdgIndicators } from "@/lib/sample-data";
+import { rainfallForecast as fallbackForecast, hydropowerLevels, agricultureStress, sdgIndicators } from "@/lib/sample-data";
+import { useLiveClimate } from "@/lib/use-live";
 import { CloudRain, Mountain, Droplet, Zap, TrendingUp, AlertTriangle } from "lucide-react";
 import {
   AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
@@ -20,16 +21,19 @@ const tooltipStyle = {
 };
 
 function Overview() {
+  const { districts, alerts, forecast, isFetching, fetchedAt } = useLiveClimate();
   const highRisk = districts.filter((d) => d.riskScore >= 70).length;
+  const avgFlood = Math.round(districts.reduce((a, b) => a + b.riskScore, 0) / districts.length);
+  const rainfallForecast = forecast.length ? forecast : fallbackForecast;
   return (
     <>
       <Topbar title="Climate Risk Overview" subtitle="Aggregate intelligence across all 30 districts of Rwanda." />
       <div className="p-6 space-y-6">
         {/* stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <StatCard label="Active alerts" value="14" delta="+3 today" trend="up" icon={AlertTriangle} tone="danger" />
-          <StatCard label="High-risk districts" value={String(highRisk)} delta="+1 vs last week" trend="up" icon={Mountain} tone="warning" />
-          <StatCard label="Flood probability" value="68%" delta="+12% 24h" trend="up" icon={CloudRain} tone="primary" />
+          <StatCard label="Active alerts" value={String(alerts.length)} delta={isFetching ? "syncing…" : "live feed"} trend="up" icon={AlertTriangle} tone="danger" />
+          <StatCard label="High-risk districts" value={String(highRisk)} delta="rainfall-weighted" trend="up" icon={Mountain} tone="warning" />
+          <StatCard label="Avg flood probability" value={`${avgFlood}%`} delta="Open-Meteo live" trend="up" icon={CloudRain} tone="primary" />
           <StatCard label="Hydropower reserve" value="73%" delta="-4% week" trend="down" icon={Zap} tone="success" />
         </div>
 
@@ -42,7 +46,8 @@ function Overview() {
                 <p className="text-xs text-muted-foreground">Live flood-risk visualization · 30 districts</p>
               </div>
               <div className="text-xs text-success flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" /> Updated 2 min ago
+                <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
+                {fetchedAt ? `Live · ${new Date(fetchedAt).toLocaleTimeString()}` : "Live data"}
               </div>
             </div>
             <RwandaMap height={460} />
