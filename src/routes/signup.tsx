@@ -26,10 +26,10 @@ function Signup() {
         <h1 className="mt-2 text-3xl font-semibold tracking-tight">Create your operator account.</h1>
         <form className="mt-8 space-y-4" onSubmit={(e)=>{e.preventDefault(); navigate({to:"/dashboard"});}}>
           {[
-            { label: "Full name", icon: User, placeholder: "Dr. Aline Karenzi" },
-            { label: "Organization", icon: Building2, placeholder: "MINEMA / Meteo Rwanda" },
-            { label: "Email", icon: Mail, placeholder: "you@agency.gov.rw" },
-            { label: "Password", icon: Lock, placeholder: "••••••••", type: "password" },
+            { label: "Full name", icon: User, placeholder: "CYUSA JASON" },
+            { label: "Organization", icon: Building2, placeholder: " Meteo Rwanda" },
+            { label: "Email", icon: Mail, placeholder: "cyusajason209@gmail.com" },
+            { label: "Password", icon: Lock, placeholder: "password", type: "password" },
           ].map((f)=>(
             <div key={f.label}>
               <label className="text-xs font-medium text-muted-foreground">{f.label}</label>
