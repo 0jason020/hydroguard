@@ -184,8 +184,6 @@ function Landing() {
         </div>
       </section>
 
-      {/* Impact */}
-      <section id="impact" className="relative mx-auto max-w-7xl px-6 py-20">
       {/* Team */}
       <section id="team" className="relative mx-auto max-w-7xl px-6 py-20">
         <div className="text-center max-w-2xl mx-auto">
