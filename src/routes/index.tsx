@@ -27,6 +27,7 @@ function Landing() {
             <a href="#mission" className="hover:text-foreground transition">Mission</a>
             <a href="#features" className="hover:text-foreground transition">Intelligence</a>
             <a href="#ggcrs" className="hover:text-foreground transition">GGCRS</a>
+            <a href="#team" className="hover:text-foreground transition">Team</a>
             <a href="#impact" className="hover:text-foreground transition">Impact</a>
           </nav>
           <div className="flex items-center gap-2">
