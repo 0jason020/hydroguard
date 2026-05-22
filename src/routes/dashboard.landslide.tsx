@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Topbar } from "@/components/dashboard/Topbar";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { RwandaMap } from "@/components/dashboard/RwandaMap";
-import { districts } from "@/lib/sample-data";
+import { useLiveClimate } from "@/lib/use-live";
 import { Mountain, Layers, Droplets, TriangleAlert } from "lucide-react";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 
@@ -21,6 +21,7 @@ const terrainRadar = [
 ];
 
 function Landslide() {
+  const { districts } = useLiveClimate();
   const high = districts.filter((d) => d.landslideRisk === "high");
   return (
     <>
@@ -37,7 +38,7 @@ function Landslide() {
           <div className="lg:col-span-2 glass-strong rounded-2xl p-5">
             <h2 className="text-lg font-semibold mb-1">Landslide risk zones</h2>
             <p className="text-xs text-muted-foreground mb-4">High concentration in Western and Northern provinces</p>
-            <RwandaMap height={420} metric="landslideRisk" />
+            <RwandaMap height={420} metric="landslideRisk" data={districts} />
           </div>
           <div className="glass-strong rounded-2xl p-5">
             <h2 className="text-lg font-semibold">Risk factor fingerprint</h2>

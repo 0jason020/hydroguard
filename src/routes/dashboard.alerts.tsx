@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Topbar } from "@/components/dashboard/Topbar";
 import { AlertCard } from "@/components/dashboard/AlertCard";
-import { alerts } from "@/lib/sample-data";
+import { useLiveClimate } from "@/lib/use-live";
 import { useState } from "react";
 
 export const Route = createFileRoute("/dashboard/alerts")({ component: Alerts });
@@ -15,6 +15,7 @@ const tabs = [
 
 function Alerts() {
   const [tab, setTab] = useState<(typeof tabs)[number]["id"]>("all");
+  const { alerts } = useLiveClimate();
   const filtered = tab === "all" ? alerts : alerts.filter((a) => a.severity === tab);
   return (
     <>
