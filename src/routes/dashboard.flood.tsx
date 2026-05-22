@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Topbar } from "@/components/dashboard/Topbar";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { RwandaMap } from "@/components/dashboard/RwandaMap";
-import { districts, rainfallForecast } from "@/lib/sample-data";
+import { rainfallForecast as fallbackForecast } from "@/lib/sample-data";
+import { useLiveClimate } from "@/lib/use-live";
 import { CloudRain, Waves, AlertTriangle, MapPin } from "lucide-react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Legend } from "recharts";
 
@@ -23,10 +24,12 @@ const historical = [
 ];
 
 function Flood() {
+  const { districts, forecast, fetchedAt } = useLiveClimate();
   const high = districts.filter((d) => d.floodRisk === "high");
+  const rainfallForecast = forecast.length ? forecast : fallbackForecast;
   return (
     <>
-      <Topbar title="Flood Prediction" subtitle="Probabilistic flood forecasting fused from rainfall, river gauges and SAR imagery." />
+      <Topbar title="Flood Prediction" subtitle={`Live rainfall fusion · ${fetchedAt ? new Date(fetchedAt).toLocaleTimeString() : "Open-Meteo"}`} />
       <div className="p-6 space-y-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard label="High-risk districts" value={String(high.length)} icon={MapPin} tone="danger" />
@@ -39,7 +42,7 @@ function Flood() {
           <div className="lg:col-span-2 glass-strong rounded-2xl p-5">
             <h2 className="text-lg font-semibold mb-1">Flood-risk districts</h2>
             <p className="text-xs text-muted-foreground mb-4">Color-coded by predicted probability</p>
-            <RwandaMap height={420} metric="floodRisk" />
+            <RwandaMap height={420} metric="floodRisk" data={districts} />
           </div>
           <div className="glass-strong rounded-2xl p-5">
             <h2 className="text-lg font-semibold">Top probability</h2>

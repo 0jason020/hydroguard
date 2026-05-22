@@ -50,7 +50,7 @@ function Overview() {
                 {fetchedAt ? `Live · ${new Date(fetchedAt).toLocaleTimeString()}` : "Live data"}
               </div>
             </div>
-            <RwandaMap height={460} />
+            <RwandaMap height={460} data={districts} />
           </div>
           <div className="glass-strong rounded-2xl p-5 flex flex-col">
             <div className="flex items-center justify-between mb-4">
